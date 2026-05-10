@@ -1,0 +1,57 @@
+prePuller:
+  hook:
+    enabled: false
+  continuous:
+    enabled: false
+
+singleuser:
+  image:
+    name: docker.io/library/pytorch-codeserver
+    tag: latest
+    pullPolicy: IfNotPresent
+  storage:
+    homeMountPath: "/home/jovyan"   
+    capacity: 20Gi
+
+  extraResource:
+    limits:
+      nvidia.com/mig-1g.12gb: 1
+  cpu:
+    limit: 4
+    guarantee: 2
+  memory:
+    limit: 16G
+    guarantee: 8G
+
+proxy:
+  service:
+    type: NodePort
+    nodePorts:
+      http: 30080
+  chp:
+    extraCommandLineFlags:
+      - "--no-include-prefix"
+
+hub:
+  config:
+    JupyterHub:
+      admin_access: true
+    Authenticator:
+      admin_users:
+        - admin
+  extraEnv:
+    JHUB_USER_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: jhub-passwords
+          key: user-password
+    JHUB_ADMIN_PASSWORD:
+      valueFrom:
+        secretKeyRef:
+          name: jhub-passwords
+          key: admin-password
+
+cull:
+  enabled: true
+  timeout: 7200
+  every: 600
