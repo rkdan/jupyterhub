@@ -17,7 +17,7 @@ kubectl create secret generic jhub-passwords -n jhub \
 
 helm upgrade --install jhub jupyterhub/jupyterhub \
   --namespace jhub --create-namespace \
-  --values config-vscode.yaml \
+  --values configs/config-vscode-gpu.yaml \
   --set-file hub.extraConfig.01-admin-password\\.py=hub-config/admin.py \
   --set-file hub.extraConfig.02-code-spawner\\.py=hub-config/code_spawner.py
 

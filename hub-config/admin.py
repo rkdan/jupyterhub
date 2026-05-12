@@ -1,8 +1,9 @@
 import os
 from jupyterhub.auth import DummyAuthenticator
+from traitlets import Unicode
 
 class TwoPasswordAuth(DummyAuthenticator):
-    admin_password = ""
+    admin_password = Unicode("", config=True)
 
     async def authenticate(self, handler, data):
         username = data["username"]

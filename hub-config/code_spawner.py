@@ -26,6 +26,7 @@ class VSCodeKubeSpawner(KubeSpawner):
             args += ["-vvv"]
 
         args.extend(self.args)
+        args += ["/home/jovyan/hands-on-llms"]
         return args
 
 c.JupyterHub.spawner_class = VSCodeKubeSpawner

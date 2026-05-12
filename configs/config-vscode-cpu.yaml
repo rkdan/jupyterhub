@@ -10,15 +10,19 @@ singleuser:
     tag: latest
     pullPolicy: IfNotPresent
   storage:
-    homeMountPath: "/home/jovyan"   
+    homeMountPath: "/home/jovyan"
     capacity: 20Gi
+  lifecycleHooks:
+    postStart:
+      exec:
+        command:
+          - /bin/bash
+          - -c
+          - "[ -d /home/jovyan/hands-on-llms ] || git clone https://github.com/acceleratescience/hands-on-llms /home/jovyan/hands-on-llms"
 
-  extraResource:
-    limits:
-      nvidia.com/mig-1g.12gb: 1
   cpu:
     limit: 4
-    guarantee: 2
+    guarantee: 1
   memory:
     limit: 16G
     guarantee: 8G
