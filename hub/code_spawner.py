@@ -1,5 +1,9 @@
+import os
+
 from kubespawner.spawner import KubeSpawner
 from jupyterhub.spawner import _quote_safe
+
+GIT_REPO = os.environ["GIT_REPO"]
 
 class VSCodeKubeSpawner(KubeSpawner):
     def get_args(self):
@@ -26,7 +30,7 @@ class VSCodeKubeSpawner(KubeSpawner):
             args += ["-vvv"]
 
         args.extend(self.args)
-        args += ["/home/jovyan/hands-on-llms"]
+        args += [f"/home/jovyan/{GIT_REPO}"]
         return args
 
 c.JupyterHub.spawner_class = VSCodeKubeSpawner

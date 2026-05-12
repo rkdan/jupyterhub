@@ -1,4 +1,5 @@
 passwords.env
+repo.env
 .env
 
 # our website is a university one, so we ignore all .ac.uk domains

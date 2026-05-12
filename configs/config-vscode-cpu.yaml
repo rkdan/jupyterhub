@@ -18,7 +18,7 @@ singleuser:
         command:
           - /bin/bash
           - -c
-          - "[ -d /home/jovyan/hands-on-llms ] || git clone https://github.com/acceleratescience/hands-on-llms /home/jovyan/hands-on-llms"
+          - '[ -d "/home/jovyan/$GIT_REPO" ] || git clone "https://github.com/$GIT_ORG/$GIT_REPO" "/home/jovyan/$GIT_REPO"'
 
   cpu:
     limit: 4
