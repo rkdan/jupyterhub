@@ -9,6 +9,8 @@ singleuser:
     name: docker.io/library/pytorch-codeserver
     tag: latest
     pullPolicy: IfNotPresent
+  extraEnv:
+    NVIDIA_VISIBLE_DEVICES: "void"
   storage:
     homeMountPath: "/home/jovyan"
     capacity: 20Gi
