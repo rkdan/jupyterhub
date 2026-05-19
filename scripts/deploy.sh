@@ -62,6 +62,8 @@ helm upgrade --install jhub jupyterhub/jupyterhub \
   --set "singleuser.extraEnv.GIT_REPO=$GIT_REPO" \
   --set "hub.extraEnv.GIT_REPO=$GIT_REPO" \
   --set-file hub.extraConfig.01-admin-password\\.py=hub/admin.py \
-  --set-file hub.extraConfig.02-code-spawner\\.py=hub/code_spawner.py
+  --set-file hub.extraConfig.02-code-spawner\\.py=hub/code_spawner.py \
+  --set-file hub.extraFiles.logo.binaryData=<(base64 -w0 assets/acc_4.png) \
+  --set-file hub.extraFiles.login_template.stringData=hub/login.html
 
 kubectl rollout status -n jhub deployment/hub

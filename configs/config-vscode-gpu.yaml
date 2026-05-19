@@ -43,9 +43,19 @@ hub:
   config:
     JupyterHub:
       admin_access: true
+      logo_file: /usr/local/share/jupyterhub/static/images/logo.png
+      template_paths:
+        - /usr/local/share/jupyterhub/templates-custom
     Authenticator:
       admin_users:
         - admin
+  extraFiles:
+    logo:
+      mountPath: /usr/local/share/jupyterhub/static/images/logo.png
+      # binaryData provided by deploy.sh via --set-file
+    login_template:
+      mountPath: /usr/local/share/jupyterhub/templates-custom/login.html
+      # stringData provided by deploy.sh via --set-file
   extraEnv:
     JHUB_USER_PASSWORD:
       valueFrom:

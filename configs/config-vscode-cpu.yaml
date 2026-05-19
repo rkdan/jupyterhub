@@ -11,6 +11,11 @@ singleuser:
     pullPolicy: IfNotPresent
   extraEnv:
     NVIDIA_VISIBLE_DEVICES: "void"
+    SPLINTER_API_KEY:
+      valueFrom:
+        secretKeyRef:
+          name: jhub-passwords
+          key: splinter-api-key
   storage:
     homeMountPath: "/home/jovyan"
     capacity: 20Gi
@@ -20,7 +25,16 @@ singleuser:
         command:
           - /bin/bash
           - -c
-          - '[ -d "/home/jovyan/$GIT_REPO" ] || git clone "https://github.com/$GIT_ORG/$GIT_REPO" "/home/jovyan/$GIT_REPO"'
+          - |
+            set -e
+            cd /home/jovyan
+            [ -d "$GIT_REPO" ] || git clone "https://github.com/$GIT_ORG/$GIT_REPO" "$GIT_REPO"
+            cd "$GIT_REPO"
+            if [ -f pyproject.toml ]; then
+              uv sync
+            fi
+            ACTIVATE="source /home/jovyan/$GIT_REPO/.venv/bin/activate"
+            grep -qxF "$ACTIVATE" /home/jovyan/.bashrc 2>/dev/null || echo "$ACTIVATE" >> /home/jovyan/.bashrc
 
   cpu:
     limit: 4
@@ -42,9 +56,18 @@ hub:
   config:
     JupyterHub:
       admin_access: true
+      logo_file: /usr/local/share/jupyterhub/static/images/logo.png
+      template_paths:
+        - /usr/local/share/jupyterhub/templates-custom
     Authenticator:
       admin_users:
         - admin
+  extraFiles:
+    logo:
+      mountPath: /usr/local/share/jupyterhub/static/images/logo.png
+    login_template:
+      mountPath: /usr/local/share/jupyterhub/templates-custom/login.html
+      # stringData provided by deploy.sh via --set-file
   extraEnv:
     JHUB_USER_PASSWORD:
       valueFrom:
@@ -56,6 +79,7 @@ hub:
         secretKeyRef:
           name: jhub-passwords
           key: admin-password
+
 
 cull:
   enabled: true
