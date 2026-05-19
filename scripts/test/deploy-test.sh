@@ -3,7 +3,7 @@
 # Logs in as testuser1..N with the shared user password and starts each server.
 #
 # Usage:
-#   ./load-test.sh [--count N] [--url URL] [--prefix NAME] [--teardown]
+#   ./deploy-test.sh [--count N] [--url URL] [--prefix NAME] [--teardown]
 #
 #   --count N      number of users to spawn (default: 7)
 #   --url URL      hub base URL (default: http://localhost:30080)
