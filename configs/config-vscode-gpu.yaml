@@ -18,7 +18,14 @@ singleuser:
         command:
           - /bin/bash
           - -c
-          - '[ -d "/home/jovyan/$GIT_REPO" ] || git clone "https://github.com/$GIT_ORG/$GIT_REPO" "/home/jovyan/$GIT_REPO"'
+          - |
+            set -e
+            [ -d "/home/jovyan/$GIT_REPO" ] || git clone "https://github.com/$GIT_ORG/$GIT_REPO" "/home/jovyan/$GIT_REPO"
+            EXT_DIR=/home/jovyan/.local/share/code-server/extensions
+            mkdir -p "$EXT_DIR"
+            if [ -d /opt/code-extensions ]; then
+              cp -rn /opt/code-extensions/. "$EXT_DIR"/
+            fi
 
   extraResource:
     limits:

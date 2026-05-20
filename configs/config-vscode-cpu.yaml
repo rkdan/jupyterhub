@@ -35,6 +35,11 @@ singleuser:
             fi
             ACTIVATE="source /home/jovyan/$GIT_REPO/.venv/bin/activate"
             grep -qxF "$ACTIVATE" /home/jovyan/.bashrc 2>/dev/null || echo "$ACTIVATE" >> /home/jovyan/.bashrc
+            EXT_DIR=/home/jovyan/.local/share/code-server/extensions
+            mkdir -p "$EXT_DIR"
+            if [ -d /opt/code-extensions ]; then
+              cp -rn /opt/code-extensions/. "$EXT_DIR"/
+            fi
 
   cpu:
     limit: 4
